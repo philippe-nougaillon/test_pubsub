@@ -25,6 +25,7 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
+        Events.instance.publish('product.created', payload: {product_id: @product.id})
         format.html { redirect_to product_url(@product), notice: "Product was successfully created." }
         format.json { render :show, status: :created, location: @product }
       else
